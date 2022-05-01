@@ -20,14 +20,12 @@ namespace PrimitiveLaunching
 
         private void AddProjectiles()
         {
-            GameObject sphere = CreatePrimitive(PrimitiveType.Sphere);
-            GameObject cube = CreatePrimitive(PrimitiveType.Cube);
-            GameObject cylinder = CreatePrimitive(PrimitiveType.Cylinder);
-            GameObject capsule = CreatePrimitive(PrimitiveType.Capsule);
-            indexes.Add(MeteorLaunching.AddProjectile(sphere));
-            indexes.Add(MeteorLaunching.AddProjectile(cube));
-            indexes.Add(MeteorLaunching.AddProjectile(cylinder));
-            indexes.Add(MeteorLaunching.AddProjectile(capsule));
+            indexes.Add(MeteorLaunching.AddProjectile(CreatePrimitive(PrimitiveType.Sphere)));
+            indexes.Add(MeteorLaunching.AddProjectile(CreatePrimitive(PrimitiveType.Cube)));
+            indexes.Add(MeteorLaunching.AddProjectile(CreatePrimitive(PrimitiveType.Cylinder)));
+            indexes.Add(MeteorLaunching.AddProjectile(CreatePrimitive(PrimitiveType.Capsule)));
+            indexes.Add(MeteorLaunching.AddProjectile(CreatePrimitive(PrimitiveType.Plane)));
+            indexes.Add(MeteorLaunching.AddProjectile(CreatePrimitive(PrimitiveType.Quad)));
         }
 
         private void MeteorLaunched(int p, GameObject newMeteor)
@@ -45,7 +43,6 @@ namespace PrimitiveLaunching
 
         private GameObject CreatePrimitive(PrimitiveType primitiveType)
         {
-            if (!(primitiveType == PrimitiveType.Cube || primitiveType == PrimitiveType.Sphere || primitiveType == PrimitiveType.Cylinder || primitiveType == PrimitiveType.Capsule)) return null;
             GameObject main = new GameObject(primitiveType.ToString());
             OWRigidbody owrigid = main.AddComponent<OWRigidbody>();
             GameObject primitive = GameObject.CreatePrimitive(primitiveType);
@@ -71,7 +68,11 @@ namespace PrimitiveLaunching
                     Detector.AddComponent<SphereCollider>();
                     Detector.AddComponent<OWCustomCollider>();
                     break;
+                case PrimitiveType.Plane:
+                case PrimitiveType.Quad:
                 default:
+                    Detector.AddComponent<MeshCollider>().sharedMesh = primitive.GetComponent<MeshCollider>().sharedMesh;
+                    Detector.AddComponent<OWCustomCollider>();
                     break;
             }
             return main;
