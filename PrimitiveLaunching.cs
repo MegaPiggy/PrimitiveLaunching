@@ -26,7 +26,7 @@ namespace PrimitiveLaunching
             GameObject capsule = CreatePrimitive(PrimitiveType.Capsule);
             indexes.Add(MeteorLaunching.AddProjectile(sphere));
             indexes.Add(MeteorLaunching.AddProjectile(cube));
-            indexes.Add(MeteorLaunching.AddProjectile(sphere));
+            indexes.Add(MeteorLaunching.AddProjectile(cylinder));
             indexes.Add(MeteorLaunching.AddProjectile(capsule));
         }
 
