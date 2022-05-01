@@ -71,7 +71,9 @@ namespace PrimitiveLaunching
                 case PrimitiveType.Plane:
                 case PrimitiveType.Quad:
                 default:
-                    Detector.AddComponent<MeshCollider>().sharedMesh = primitive.GetComponent<MeshCollider>().sharedMesh;
+                    MeshCollider mc = Detector.AddComponent<MeshCollider>();
+                    mc.sharedMesh = primitive.GetComponent<MeshCollider>().sharedMesh;
+                    mc.convex = true;
                     Detector.AddComponent<OWCustomCollider>();
                     break;
             }
