@@ -48,25 +48,19 @@ namespace PrimitiveLaunching
             GameObject primitive = GameObject.CreatePrimitive(primitiveType);
             primitive.transform.parent = main.transform;
             GameObject Detector = new GameObject("Detector");
+            Detector.layer = LayerMask.NameToLayer("AdvancedDetector");
             Detector.transform.parent = main.transform;
-            DynamicFluidDetector fluid = Detector.AddComponent<DynamicFluidDetector>();
-            DynamicForceDetector force = Detector.AddComponent<DynamicForceDetector>();
-            owrigid._attachedForceDetector = force;
-            owrigid._attachedFluidDetector = fluid;
             switch (primitiveType)
             {
                 case PrimitiveType.Cylinder:
                 case PrimitiveType.Capsule:
                     Detector.AddComponent<CapsuleCollider>().height = 2;
-                    Detector.AddComponent<OWCapsuleCollider>();
                     break;
                 case PrimitiveType.Cube:
                     Detector.AddComponent<BoxCollider>();
-                    Detector.AddComponent<OWCustomCollider>();
                     break;
                 case PrimitiveType.Sphere:
                     Detector.AddComponent<SphereCollider>();
-                    Detector.AddComponent<OWCustomCollider>();
                     break;
                 case PrimitiveType.Plane:
                 case PrimitiveType.Quad:
@@ -74,9 +68,11 @@ namespace PrimitiveLaunching
                     MeshCollider mc = Detector.AddComponent<MeshCollider>();
                     mc.sharedMesh = primitive.GetComponent<MeshCollider>().sharedMesh;
                     mc.convex = true;
-                    Detector.AddComponent<OWCustomCollider>();
                     break;
             }
+            Detector.AddComponent<OWCollider>();
+            owrigid.RegisterAttachedForceDetector(Detector.AddComponent<DynamicForceDetector>());
+            owrigid.RegisterAttachedFluidDetector(Detector.AddComponent<DynamicFluidDetector>());
             return main;
         }
     }
